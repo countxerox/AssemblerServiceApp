@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<invokeResponse xmlns="http://adobe.com/idp/services">
+			<result xsi:type="ns1:AssemblerResult" xmlns:ns1="http://adobe.com/idp/services">
+				<documents xsi:type="ns2:Map" xmlns:ns2="http://xml.apache.org/xml-soap">
+					<ns2:item>
+						<ns2:key xsi:type="xsd:string">target_document</ns2:key>
+						<ns2:value xsi:type="ns1:BLOB">
+							<contentType>application/pdf</contentType>
+							<binaryData>JVBERi0... ...cKJSVFT0YK</binaryData>
+							<attributes>
+								<item>
+									<key xsi:type="xsd:string">basename</key>
+									<value xsi:type="xsd:string">target_document.pdf</value>
+								</item>
+								<item>
+									<key xsi:type="xsd:string">file</key>
+									<value xsi:type="xsd:string">target_document.pdf</value>
+								</item>
+								<item>
+									<key xsi:type="xsd:string">ADOBE_SAVE_MODE_REQUIRED_ATTRIBUTE</key>
+									<value xsi:type="xsd:string">false</value>
+								</item>
+								<item>
+									<key xsi:type="xsd:string">wsfilename</key>
+									<value xsi:type="xsd:string">target_document.pdf</value>
+								</item>
+								<item>
+									<key xsi:type="xsd:string">ADOBE_SAVE_MODE_FORCE_COMPRESSED_OBJECTS_ATTRIBUTE</key>
+									<value xsi:type="xsd:string">false</value>
+								</item>
+								<item>
+									<key xsi:type="xsd:string">ADOBE_SAVE_MODE_ATTRIBUTE</key>
+									<value xsi:type="xsd:string">INCREMENTAL</value>
+								</item>
+							</attributes>
+						</ns2:value>
+					</ns2:item>
+					<ns2:item>
+						<ns2:key xsi:type="xsd:string">outDoc</ns2:key>
+						<ns2:value xsi:type="ns1:BLOB">
+						<contentType>application/pdf</contentType>
+						<binaryData>JVBERi0... ...UlRU9GCg==</binaryData>
+						<attributes>
+							<item>
+								<key xsi:type="xsd:string">file</key>
+								<value xsi:type="xsd:string">File.pdf</value>
+							</item>
+							<item>
+							<key xsi:type="xsd:string">basename</key>
+							<value xsi:type="xsd:string">File.pdf</value>
+							</item><item><key xsi:type="xsd:string">ADOBE_SAVE_MODE_REQUIRED_ATTRIBUTE</key>
+							<value xsi:type="xsd:string">true</value>
+							</item>
+							<item>
+							<key xsi:type="xsd:string">wsfilename</key>
+							<value xsi:type="xsd:string">File.pdf</value>
+							</item>
+							<item>
+							<key xsi:type="xsd:string">ADOBE_SAVE_MODE_FORCE_COMPRESSED_OBJECTS_ATTRIBUTE</key>
+							<value xsi:type="xsd:string">false</value>
+							</item>
+							<item>
+							<key xsi:type="xsd:string">ADOBE_SAVE_MODE_ATTRIBUTE</key>
+							<value xsi:type="xsd:string">FAST_WEB_VIEW</value>
+							</item>
+						</attributes>
+					</ns2:value></ns2:item>
+				</documents>
+				<failedBlockNames xsi:type="MyArrayOf_xsd_anyType"/>
+				<jobLog xsi:type="ns1:BLOB">
+					<contentType>text/xml</contentType>
+					<binaryData>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48bG9nPjx0b3RhbEVsYXBzZWRUaW1lIHdhbGxDbG9ja1RpbWU9IjYuNjU2IiBjcHVUaW1lPSIyLjA5Mzc1Ii8+PC9sb2c+</binaryData>
+					<attributes>
+						<item>
+							<key xsi:type="xsd:string">file</key>
+							<value xsi:type="xsd:string">C:\windows\TEMP\asmJobLog_8640447729396838674826388134626429532.tmp</value>
+						</item>
+						<item>
+							<key xsi:type="xsd:string">basename</key>
+							<value xsi:type="xsd:string">asmJobLog_8640447729396838674826388134626429532.tmp</value>
+						</item>
+						<item>
+							<key xsi:type="xsd:string">wsfilename</key>
+							<value xsi:type="xsd:string">C:\windows\TEMP\asmJobLog_8640447729396838674826388134626429532.tmp</value>
+						</item>
+					</attributes>
+				</jobLog>
+				<lastBatesNumber xsi:type="xsd:int">-1</lastBatesNumber>
+				<multipleResultsBlocks xsi:type="ns3:Map" xmlns:ns3="http://xml.apache.org/xml-soap"/>
+				<numRequestedBlocks xsi:type="xsd:int">2</numRequestedBlocks>
+				<successfulBlockNames xsi:type="MyArrayOf_xsd_anyType">
+					<item xsi:type="xsd:string">target_document</item>
+					<item xsi:type="xsd:string">outDoc</item>
+				</successfulBlockNames><successfulDocumentNames xsi:type="MyArrayOf_xsd_anyType">
+					<item xsi:type="xsd:string">target_document</item>
+					<item xsi:type="xsd:string">outDoc</item>
+				</successfulDocumentNames>
+				<throwables xsi:type="ns4:Map" xmlns:ns4="http://xml.apache.org/xml-soap"/>
+			</result>
+		</invokeResponse>
+	</soapenv:Body>
+</soapenv:Envelope>

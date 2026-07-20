@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+<S:Header/>
+	<S:Body>
+		<ns2:invokeOneDocument xmlns:ns2="http://adobe.com/idp/services" xmlns="http://xml.apache.org/xml-soap">
+			<ns2:ddx>
+				<ns2:binaryData>PD94bWwg... ...QREY+CjwvRERYPgo=</ns2:binaryData>
+			</ns2:ddx>
+			<ns2:inDoc>
+				<ns2:binaryData>JVBERi0... ...CiUlRU9GCg==</ns2:binaryData>
+			</ns2:inDoc>
+		</ns2:invokeOneDocument>
+	</S:Body>
+</S:Envelope>

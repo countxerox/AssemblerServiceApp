@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Header/>
+		<S:Body>
+			<ns2:invoke xmlns:ns2="http://adobe.com/idp/services" xmlns="http://xml.apache.org/xml-soap">
+				<ns2:inDDXDoc>
+					<ns2:binaryData>PD94bWwg... ...jwvRERYPg==</ns2:binaryData>
+				</ns2:inDDXDoc>
+				
+			<ns2:inputs>
+				<ns2:item>
+					<ns2:key>inDoc</ns2:key>
+					<ns2:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns2:BLOB">
+						<ns2:binaryData>JVBERi0xLjc... ...KJSVFT0YK</ns2:binaryData>
+					</ns2:value>
+				</ns2:item>
+				
+				<ns2:item>
+					<ns2:key>coversheet3</ns2:key>
+					<ns2:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns2:BLOB">
+						<ns2:binaryData>PCFkb2N0... ...wvaHRtbD4=</ns2:binaryData>	
+					</ns2:value>
+				</ns2:item>
+					
+				<ns2:item>
+					<ns2:key>coversheet2</ns2:key>
+					<ns2:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns2:BLOB">
+						<ns2:binaryData>PCFkb2N0e... ...PC9odG1sPg==</ns2:binaryData>
+					</ns2:value>
+				</ns2:item>
+				
+				<ns2:item>
+					<ns2:key>coversheet1</ns2:key><ns2:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns2:BLOB">
+						<ns2:binaryData>PCFkb2N... ...jwvaHRtbD4=</ns2:binaryData>
+					</ns2:value>
+				</ns2:item>
+			</ns2:inputs>
+			</ns2:invoke>
+		</S:Body>
+</S:Envelope>

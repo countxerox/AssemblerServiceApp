@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<DDX xmlns="http://ns.adobe.com/DDX/1.0/">
+
+	<PDF result="target_document">
+
+		<PDF source="inDoc" />
+
+	</PDF>
+
+	<PDF result="outDoc">
+
+		<PDF source="coversheet1">
+			<PageSize width="8.27in" height="11.69in" />
+		</PDF>
+
+		<PDF source="coversheet3">
+			<PageSize width="8.27in" height="11.69in" />
+
+		</PDF>
+
+		<PDF source="coversheet2">
+			<PageSize width="8.27in" height="11.69in" />
+		</PDF>
+
+		<PDF source="target_document" />
+
+	</PDF>
+
+</DDX>

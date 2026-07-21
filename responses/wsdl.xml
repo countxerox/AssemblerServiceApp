@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="AssemblerService" targetNamespace="http://adobe.com/idp/services" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://adobe.com/idp/services" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types><xsd:schema targetNamespace="http://adobe.com/idp/services" elementFormDefault="qualified">
+    <xsd:element name="invoke"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+    <xsd:element name="invokeResponse"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+    <xsd:element name="invokeOneDocument"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+    <xsd:element name="invokeOneDocumentResponse"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+  </xsd:schema></wsdl:types>
+  <wsdl:message name="invokeRequest"><wsdl:part name="parameters" element="tns:invoke"/></wsdl:message>
+  <wsdl:message name="invokeResponse"><wsdl:part name="parameters" element="tns:invokeResponse"/></wsdl:message>
+  <wsdl:message name="invokeOneDocumentRequest"><wsdl:part name="parameters" element="tns:invokeOneDocument"/></wsdl:message>
+  <wsdl:message name="invokeOneDocumentResponse"><wsdl:part name="parameters" element="tns:invokeOneDocumentResponse"/></wsdl:message>
+  <wsdl:portType name="AssemblerServicePortType">
+    <wsdl:operation name="invoke"><wsdl:input message="tns:invokeRequest"/><wsdl:output message="tns:invokeResponse"/></wsdl:operation>
+    <wsdl:operation name="invokeOneDocument"><wsdl:input message="tns:invokeOneDocumentRequest"/><wsdl:output message="tns:invokeOneDocumentResponse"/></wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AssemblerServiceSoapBinding" type="tns:AssemblerServicePortType"><soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="invoke"><soap:operation soapAction="invoke"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation>
+    <wsdl:operation name="invokeOneDocument"><soap:operation soapAction="invokeOneDocument"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AssemblerService"><wsdl:port name="AssemblerServicePort" binding="tns:AssemblerServiceSoapBinding"><soap:address location="http://localhost:8080/soap/services/AssemblerService"/></wsdl:port></wsdl:service>
+</wsdl:definitions>

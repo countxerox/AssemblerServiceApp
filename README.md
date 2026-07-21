@@ -1,112 +1,87 @@
-Assembler Service App
-Overview
+# Assembler Service App
+
+## Overview
 
 Assembler Service App is a lightweight Java application that emulates the Adobe Experience Manager (AEM) Forms / LiveCycle Assembler SOAP service sometimes used by PTC Windchill.
 
-The primary goal of this project is to allow Windchill's Coversheet functionality to operate without requiring a full Adobe AEM Forms installation because AEM is becoming cloud based in the future and the on-premise option is reaching end-of-life.
+The project lets Windchill Coversheets operate without a full Adobe AEM Forms installation. It currently replays captured SOAP responses; dynamically generating the assembled PDFs is a future goal.
 
-Initially the application simply replayed previously captured SOAP responses from a real AEM server. The long-term goal is to replace these static responses with dynamically generated ones, ultimately providing a complete drop-in replacement for the Adobe Assembler service.
+## Current Features
 
-Current Features
-Implements a minimal HTTP SOAP service using the JDK HttpServer (no Spring Boot required).
-Serves the captured Adobe Assembler WSDL.
-Detects incoming SOAP operations.
-Returns captured SOAP responses for testing.
-External XML response files can be modified without recompiling.
-Designed for debugging with TCPMon.
-Project Structure
-CoverSheets/
-│
-├── src/
-│   └── ext/MA/coversheets/
-│       ├── AssemblerServiceApp.java
-│       ├── RequestHandler.java
-│       ├── SoapUtils.java
-│       ├── PdfMerger.java
-│       └── SoapResponseBuilder.java
-│
-├── responses/
-│   ├── wsdl.xml
-│   ├── response-1.xml
-│   └── response-2.xml
-│
-└── CoverSheets.jar
-How it Works
+- Implements a minimal HTTP SOAP service using the JDK `HttpServer`.
+- Serves the bundled Assembler WSDL from `responses/wsdl.xml`.
+- Routes SOAP requests by the operation element in the SOAP body.
+- Returns captured SOAP responses that can be modified without recompiling.
+- Supports TCPMon-based request and response inspection.
 
-Windchill communicates with the Assembler SOAP service using three requests.
+## Project Structure
 
-1. invoke
-   
-Windchill sends:
-DDX document (inDDXDoc)
-Original PDF (inDoc)
-One or more HTML coversheet pages (coversheet1, coversheet2, coversheet3)
-See request-1.xml for an example
+```
+.
+├── ext/MA/coversheets/
+│   ├── AssemblerServiceApp.java
+│   ├── RequestHandler.java
+│   ├── SoapUtils.java
+│   ├── PDFMerger.java
+│   └── SoapResponseBuilder.java
+├── lib/
+│   ├── ddxDirective.xml
+│   └── pdfbox-app-3.0.7.jar
+└── responses/
+    ├── request-1.xml
+    ├── request-2.xml
+    ├── response-1.xml
+    ├── response-2.xml
+    └── wsdl.xml
+```
 
-The current implementation returns a captured SOAP response.
-See response-1.xml for an example
+## How It Works
 
-Future versions will:
-Convert the coversheet HTML pages into a PDF and add them to the inDOc
-Return a dynamically generated SOAP response which returns the Orginal PDF inDoc (target_document) and a PDF document which is the coversheet and indoc merged together (outDoc)
+Windchill uses the following service requests.
 
-2. invokeOneDocuemnt
+### `invoke`
 
-Windchill sends:
-DDX document
-PDF
-See request-2.xml for an example
+Windchill sends a DDX document, the original PDF (`inDoc`), and one or more HTML coversheet pages. The service identifies the `invoke` operation and returns `responses/response-1.xml`.
 
-The service returns the PDF in a invokeOneDocumentResponse SOAP message.
-See response-2.xml for an example
+See `responses/request-1.xml` for an example request.
 
-3. WSDL
-GET /soap/services/AssemblerService?WSDL
-The service returns the captured WSDL.
+### `invokeOneDocument`
 
-A typical excange is:
-Windchill requests the WSDL with a GET
-The service responds with the WSDL
+Windchill sends a DDX document and a PDF. The service identifies the `invokeOneDocument` operation and returns `responses/response-2.xml`.
 
-Windchill makes an invoke request with a POST to AssemberService. see example request-1.xml
-The service responds with invokeResponse. see example response-1.xml
+See `responses/request-2.xml` for an example request.
 
-Windchill requests the WSDL again with a GET
-The service responds with the WSDL again
+### WSDL
 
-Windchill makes an invokeOneDocument request with a POST to AssemberService. see example request-2.xml
-The service responds with invokeOneDocumentResponse. see example response-2.xml
+`GET /soap/services/AssemblerService?WSDL` returns `responses/wsdl.xml`.
 
+## Service Endpoint
 
+`http://localhost:8080/soap/services/AssemblerService`
 
-The service listens on:
+## Response Files
 
-http://localhost:8080/soap/services/AssemblerService
-Response Files
-
-SOAP responses are stored outside the application:
-
+```
 responses/
-    wsdl.xml
-    create-coversheet-response.xml
-    add-coversheet-response.xml
+├── response-1.xml  # response to invoke
+├── response-2.xml  # response to invokeOneDocument
+└── wsdl.xml        # service contract served by GET ?WSDL
+```
 
-These can be replaced without rebuilding the application, making it easy to test different responses captured from Adobe AEM.
+These fixtures can be replaced without rebuilding the application, making it easy to test responses captured from Adobe AEM.
 
-Using TCPMon
+The PDF `binaryData` values in the checked-in response fixtures are placeholders, not valid Base64-encoded PDFs. The complete captured PDFs contain sensitive information, so they are removed from source control and supplied only with the deployed application where needed.
 
-During development TCPMon can be placed between Windchill and the service:
+The `responses/` directory is a testing and reference resource. Fixture loading currently depends on running the application with that directory available; it is not intended to be part of the final production use cases. The end goal is to run `AssemblerServiceApp` as a service that produces its responses without relying on these local fixtures.
 
-Windchill
-      │
-      ▼
- TCPMon :8081
-      │
-      ▼
-Adobe :8080
+## Using TCPMon
 
-TCPMon captures both the requests from Windchill and the responses generated by the fake service, making it easy to compare behaviour with a real Adobe installation.
+During development, TCPMon can sit between Windchill and this service:
 
-This project is intended as a lightweight development and testing replacement for Adobe Experience Manager Forms when used with Windchill Coversheets.
+```
+Windchill -> TCPMon :8081 -> Assembler Service :8080
+```
 
-It is not intended to be a complete implementation of the Adobe Assembler service. Instead, it focuses on implementing only the subset of SOAP operations required by Windchill.
+TCPMon captures both the requests from Windchill and the responses generated by the service, making it easy to compare behaviour with a real Adobe installation.
+
+This project is intended as a lightweight development and testing replacement for Adobe Experience Manager Forms when used with Windchill Coversheets. It implements only the SOAP operations required by this use case.

@@ -1,26 +1,26 @@
 package ext.MA.coversheets;
 
 
-import org.apache.pdfbox.multipdf.PDFMergerUtility;
-
-
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import org.apache.pdfbox.io.RandomAccessReadBuffer;
+import java.util.List;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 
 
 public class PDFMerger {
 
     public static byte[] merge(byte[] firstPdf, byte[] secondPdf) throws Exception {
-    	PDFMergerUtility merger = new PDFMergerUtility();
+        return merge(List.of(firstPdf, secondPdf));
+    }
 
-    	ByteArrayOutputStream output = new ByteArrayOutputStream();
-    	merger.setDestinationStream(output);
-
-    	merger.addSource(new RandomAccessReadBuffer(firstPdf));
-    	merger.addSource(new RandomAccessReadBuffer(secondPdf));
-
-    	merger.mergeDocuments(null);
-
-    	return output.toByteArray();
+    public static byte[] merge(List<byte[]> pdfs) throws Exception {
+        PDFMergerUtility merger = new PDFMergerUtility();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        merger.setDestinationStream(output);
+        for (byte[] pdf : pdfs) {
+            merger.addSource(new ByteArrayInputStream(pdf));
+        }
+        merger.mergeDocuments(null);
+        return output.toByteArray();
     }
 }

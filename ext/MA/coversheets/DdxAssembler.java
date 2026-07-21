@@ -1,6 +1,8 @@
 package ext.MA.coversheets;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Entities;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
@@ -63,7 +65,11 @@ public final class DdxAssembler {
 
     private static byte[] htmlPdf(byte[] html) throws Exception {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        new PdfRendererBuilder().withHtmlContent(new String(html, StandardCharsets.UTF_8), null).toStream(output).run();
+        org.jsoup.nodes.Document document = Jsoup.parse(new String(html, StandardCharsets.UTF_8));
+        document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+        document.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        document.outputSettings().prettyPrint(false);
+        new PdfRendererBuilder().withHtmlContent(document.html(), null).toStream(output).run();
         return output.toByteArray();
     }
     private static boolean isPdf(byte[] value) { return value.length >= 4 && value[0] == 37 && value[1] == 80 && value[2] == 68 && value[3] == 70; }

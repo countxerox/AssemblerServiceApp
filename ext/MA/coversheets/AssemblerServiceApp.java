@@ -14,8 +14,13 @@ public class AssemblerServiceApp {
                 new RequestHandler());
 
         server.setExecutor(null);
-        server.start();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("AssemblerServiceApp stopping");
+            server.stop(30);
+            System.out.println("AssemblerServiceApp stopped");
+        }, "assembler-service-shutdown"));
 
+        server.start();
         System.out.println("AssemblerServiceApp started on port 8080");
     }
 }

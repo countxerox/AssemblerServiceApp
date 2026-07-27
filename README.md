@@ -88,14 +88,14 @@ This project is intended as a lightweight development and testing replacement fo
 
 ## Running as a Windows Service
 
-The repository includes [AssemblerService.xml](AssemblerService.xml), a WinSW 2.12.0 configuration. Place it beside the renamed WinSW executable at `C:\AssemblerServiceApp\AssemblerService.exe`; WinSW requires the XML configuration file to have the same base name as its executable.
+The repository includes [AssemblerService.xml](AssemblerService.xml), a WinSW 2.12.0 configuration. Place it beside the renamed WinSW executable at `C:\AssemblerServiceApp-windows-service\AssemblerService.exe`; WinSW requires the XML configuration file to have the same base name as its executable.
 
-The configuration starts `java -jar "C:\AssemblerServiceApp\AssemblerServiceApp.jar"`, writes WinSW logs to `C:\AssemblerServiceApp\logs`, rolls logs, and restarts the process after an unexpected failure. Ensure the Windows service account can find `java.exe` through its `PATH`, can read the application files, and can write the log directory.
+The configuration starts `java -Xms512m -Xmx2g -jar "C:\AssemblerServiceApp-windows-service\AssemblerServiceApp.jar"`, writes WinSW logs to `C:\AssemblerServiceApp-windows-service\logs`, rolls logs, and restarts the process after an unexpected failure. Ensure the Windows service account can find `java.exe` through its `PATH`, can read the application files, and can write the log directory.
 
 From an elevated Command Prompt:
 
 ```bat
-cd C:\AssemblerServiceApp
+cd C:\AssemblerServiceApp-windows-service
 AssemblerService.exe install
 AssemblerService.exe start
 ```

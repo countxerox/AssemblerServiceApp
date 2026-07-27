@@ -4,8 +4,8 @@
   <description>Windchill Coversheets Assembler SOAP service</description>
 
   <executable>java</executable>
-  <arguments>-jar "C:\AssemblerServiceApp-windows-service\AssemblerServiceApp.jar"</arguments>
-  <workingdirectory>C:\AAssemblerServiceApp-windows-service</workingdirectory>
+  <arguments>-Xms512m -Xmx2g -jar "C:\AssemblerServiceApp-windows-service\AssemblerServiceApp.jar"</arguments>
+  <workingdirectory>C:\AssemblerServiceApp-windows-service</workingdirectory>
 
   <logpath>C:\AssemblerServiceApp-windows-service\logs</logpath>
   <log mode="roll" />

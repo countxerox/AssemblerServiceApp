@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DDX xmlns="http://ns.adobe.com/DDX/1.0/">
+   <!-- Incoming document -->
+   <PDF  result="target_document" return="false">
+      <PDF source="inDoc"/>
+   </PDF>
+   <!-- Add Watermark -->
+   <PDF  result="state" return="false">
+      <PDF source="target_document">
+         <Watermark horizontalAnchor="Center"
+                     opacity="25%"
+                     replaceExisting="false"
+                     rotation="45"
+                     verticalAnchor="Middle">
+            <StyledText color="#0000ff"
+                         font="Arial"
+                         font-size="80pt"
+                         font-style="italic"
+                         font-weight="bold">
+               <p>Released</p>
+            </StyledText>
+         </Watermark>
+      </PDF>
+   </PDF>
+   <!-- Outgoing document -->
+   <PDF  result="wvstagginginsert" return="false">
+      <PDF source="state"/>
+   </PDF>
+   <PDF  result="outDoc">
+      <PDF source="wvstagginginsert"/>
+      <ReaderRights comments="true"
+                     credentialAlias="adobeadmin"
+                     formDataImportExport="true"
+                     formFillIn="true"
+                     mode="Draft"/>
+   </PDF>
+</DDX>

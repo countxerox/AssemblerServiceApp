@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DDX xmlns="http://ns.adobe.com/DDX/1.0/">
+   <PDF  result="wvstagginginsert" return="false">
+      <PDF source="inDoc">
+         <Watermark horizontalAnchor="Left"
+                     horizontalOffset="-38pt"
+                     replaceExisting="false"
+                     verticalAnchor="Bottom">
+            <StyledText color="white" font-size="8pt">
+               <p/>
+            </StyledText>
+         </Watermark>
+      </PDF>
+   </PDF>
+   <PDF  result="outDoc">
+      <PDF source="wvstagginginsert"/>
+      <ReaderRights comments="true"
+                     credentialAlias="adobeadmin"
+                     formDataImportExport="true"
+                     formFillIn="true"
+                     mode="Draft"/>
+   </PDF>
+</DDX>

@@ -4,7 +4,7 @@
 
 Assembler Service App is a lightweight Java application that emulates the Adobe Experience Manager (AEM) Forms / LiveCycle Assembler SOAP service sometimes used by PTC Windchill.
 
-The project lets Windchill Coversheets operate without a full Adobe AEM Forms installation. It dynamically renders HTML coversheets, assembles PDFs according to the supplied DDX, and retains SOAP fixtures for testing and reference.
+The project lets Windchill Coversheets operate without an Adobe AEM Forms installation. It dynamically renders HTML coversheets, assembles PDFs with watermarking according to the supplied DDX, and retains SOAP fixtures for testing and reference.
 
 ## Current Features
 
@@ -32,6 +32,8 @@ The project lets Windchill Coversheets operate without a full Adobe AEM Forms in
     ├── request-2.xml
     ├── response-1.xml
     ├── response-2.xml
+    ├── nowatermarkDDX.xml
+    ├── watermarkDDX.xml
     └── wsdl.xml
 ```
 
@@ -47,9 +49,10 @@ See `responses/request-1.xml` for an example request.
 
 ### `invokeOneDocument`
 
-Windchill sends a DDX document and a PDF. The service returns that PDF in an `invokeOneDocumentResponse`.
+This service is used by Windchill to add watermarks to the PDF created by the invoke operation. Windchill sends a DDX document and a PDF and service returns that same PDF with watermarks in an `invokeOneDocumentResponse`. If no watermarking is specified in the DDX the service returns the same PDF.
 
-See `responses/request-2.xml` for an example request.
+See `responses/request-2.xml` for an example request without watermarks specified in the DDX
+See `responses/nowatermarkDDX.xml` for an example DDX without watermarking
 
 ### WSDL
 
@@ -101,3 +104,10 @@ AssemblerService.exe start
 ```
 
 Use `AssemblerService.exe stop` to stop it and `AssemblerService.exe uninstall` to remove it. On a normal Windows service stop, WinSW gives the JVM up to 35 seconds to exit. The application shutdown hook stops the HTTP server, stops accepting new requests, and allows active exchanges up to 30 seconds to finish.
+
+## Watermarking
+
+The invokeOneDocument service is used by Windchill to add watermarks, the SOAP request includes a DDX which is used to create a PDF which is overlayed on every page of the inDoc. The service returns the watermarked PDF in an `invokeOneDocumentResponse`.
+
+See `responses/watermarkDDX.xml` for an example DDX which applies a `Released` watermarking
+

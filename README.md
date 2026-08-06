@@ -111,3 +111,9 @@ The invokeOneDocument service is used by Windchill to add watermarks, the SOAP r
 
 See `responses/watermarkDDX.xml` for an example DDX which applies a `Released` watermarking
 
+
+## Large-document processing
+
+SOAP BLOBs are Base64-decoded directly to a per-request temporary directory. PDFBox merges source and result PDFs from temporary files, and response PDF BLOBs are Base64-encoded directly to the HTTP response stream. This avoids retaining complete request and response PDFs in the JVM heap.
+
+The 250 MiB request limit applies to the complete incoming SOAP message, including Base64 expansion. The service account must have sufficient free disk space and permission to create temporary files in the operating system temporary directory. Temporary files are removed after each request completes.

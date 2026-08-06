@@ -20,7 +20,11 @@ public class RequestHandler implements HttpHandler {
         if (!"POST".equalsIgnoreCase(method)) { sendFault(exchange, 405, "Only POST SOAP requests and GET ?WSDL are supported."); return; }
         try (InputStream input = limited(exchange); StreamingSoapRequest request = StreamingSoapRequest.parse(input)) {
             if ("invoke".equals(request.operation)) { Map<String, Path> documents = DdxAssembler.assemble(request); sendStream(exchange, output -> StreamingSoapResponse.invoke(output, documents)); }
-            else if ("invokeOneDocument".equals(request.operation)) sendStream(exchange, output -> StreamingSoapResponse.oneDocument(output, request.input("inDoc")));
+            else if ("invokeOneDocument".equals(request.operation)) {
+                Path document = request.ddx == null ? request.input("inDoc") : DdxAssembler.assemble(request).get("outDoc");
+                if (document == null) throw new IllegalArgumentException("Watermark DDX does not define outDoc.");
+                sendStream(exchange, output -> StreamingSoapResponse.oneDocument(output, document));
+            }
             else sendFault(exchange, 500, "Unsupported SOAP operation: " + request.operation);
         } catch (IllegalArgumentException e) { sendFault(exchange, 400, e.getMessage()); }
     }

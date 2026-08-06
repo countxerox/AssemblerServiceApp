@@ -33,7 +33,7 @@ final class StreamingSoapRequest implements AutoCloseable {
                 if (reader.next() != XMLStreamConstants.START_ELEMENT) continue;
                 String name = reader.getLocalName();
                 if ("Body".equals(name)) { operation = nextStartName(reader); }
-                else if ("inDDXDoc".equals(name)) ddx = readContainer(reader, directory);
+                else if ("inDDXDoc".equals(name) || "ddx".equals(name)) ddx = readContainer(reader, directory);
                 else if ("inDoc".equals(name)) inputs.put("inDoc", readContainer(reader, directory));
                 else if ("inputs".equals(name)) readInputs(reader, directory, inputs);
             }

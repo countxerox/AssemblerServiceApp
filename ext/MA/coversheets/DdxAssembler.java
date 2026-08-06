@@ -31,7 +31,13 @@ public final class DdxAssembler {
                     if (child.getNodeType() != Node.ELEMENT_NODE || !"PDF".equals(child.getLocalName())) continue;
                     String sourceName = ((Element) child).getAttribute("source");
                     Path source = results.containsKey(sourceName) ? results.get(sourceName) : request.input(sourceName);
-                    sources.add(isPdf(source) ? source : htmlPdf(source, request.directory));
+                    Path assembledSource = isPdf(source) ? source : htmlPdf(source, request.directory);
+                    for (Node operation = child.getFirstChild(); operation != null; operation = operation.getNextSibling()) {
+                        if (operation.getNodeType() == Node.ELEMENT_NODE && "Watermark".equals(operation.getLocalName())) {
+                            assembledSource = WatermarkApplier.apply(assembledSource, (Element) operation, request.directory);
+                        }
+                    }
+                    sources.add(assembledSource);
                 }
                 if (sources.isEmpty()) throw new IllegalArgumentException("DDX result has no sources: " + name);
                 Path result = Files.createTempFile(request.directory, "result-", ".pdf"); PDFMerger.merge(sources, result); results.put(name, result);

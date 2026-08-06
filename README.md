@@ -117,3 +117,9 @@ See `responses/watermarkDDX.xml` for an example DDX which applies a `Released` w
 SOAP BLOBs are Base64-decoded directly to a per-request temporary directory. PDFBox merges source and result PDFs from temporary files, and response PDF BLOBs are Base64-encoded directly to the HTTP response stream. This avoids retaining complete request and response PDFs in the JVM heap.
 
 The 250 MiB request limit applies to the complete incoming SOAP message, including Base64 expansion. The service account must have sufficient free disk space and permission to create temporary files in the operating system temporary directory. Temporary files are removed after each request completes.
+
+### Supported DDX watermarks
+
+For `invokeOneDocument`, the service interprets a `<Watermark>` nested in a source `<PDF>` element. It applies the watermark to every page at that point in the DDX sequence. The supported `Watermark` attributes are `horizontalAnchor`, `verticalAnchor`, `horizontalOffset`, `verticalOffset`, and `rotation`; offsets use points. The supported `StyledText` attributes are `color`, `font-size`, and `font-weight="bold"`.
+
+`Left`, `Center`, and `Right` horizontal anchors, and `Bottom`, `Center`, and `Top` vertical anchors are supported. Colours may be `black`, `white`, `red`, or a six-digit hexadecimal value such as `#808080`. PDFBox standard Helvetica fonts are used; DDX font names are not currently mapped to installed fonts. An empty watermark paragraph is treated as a no-op, matching the supplied `nowatermarkDDX.xml` example. Other Adobe DDX operations, such as `ReaderRights`, remain ignored.

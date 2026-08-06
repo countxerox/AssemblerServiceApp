@@ -1,0 +1,15 @@
+<service>
+  <id>AssemblerService</id>
+  <name>Assembler Service</name>
+  <description>Windchill Coversheets Assembler SOAP service</description>
+
+  <executable>java</executable>
+  <arguments>-Xms512m -Xmx2g -jar "C:\AssemblerServiceApp-windows-service\AssemblerServiceApp.jar"</arguments>
+  <workingdirectory>C:\AssemblerServiceApp-windows-service</workingdirectory>
+
+  <logpath>C:\AssemblerServiceApp-windows-service\logs</logpath>
+  <log mode="roll" />
+
+  <stoptimeout>35sec</stoptimeout>
+  <onfailure action="restart" delay="10 sec" />
+</service>

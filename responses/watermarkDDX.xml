@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DDX xmlns="http://ns.adobe.com/DDX/1.0/">
+<<<<<<< HEAD
    <!-- Incoming document -->
    <PDF  result="target_document" return="false">
       <PDF source="inDoc"/>
@@ -18,13 +19,50 @@
                          font-style="italic"
                          font-weight="bold">
                <p>Released</p>
+=======
+	<!-- Incoming document -->
+   <PDF  result="target_document" return="false">
+      <PDF source="inDoc"/>
+   </PDF>
+   <!-- Add State Watermark -->
+   <PDF  result="state" return="false">
+      <PDF source="target_document">
+         <Watermark horizontalAnchor="Right"
+                     horizontalOffset="-24pt"
+                     rotation="90"
+                     verticalAnchor="Bottom"
+                     verticalOffset="144pt">
+            <StyledText color="#808080" font="Swis721 BdOul BT" font-size="28pt">
+               <p>In Work</p>
+            </StyledText>
+         </Watermark>
+      </PDF>
+   </PDF>
+   <!-- Add Uncontrolled Watermark -->
+   <PDF  result="uncontrolled" return="false">
+      <PDF source="state">
+         <Watermark horizontalAnchor="Center"
+                     replaceExisting="false"
+                     verticalAnchor="Bottom"
+                     verticalOffset="6pt">
+            <StyledText color="#FF0000"
+                         font="Arial"
+                         font-size="8pt"
+                         font-weight="bold"
+                         text-align="center">
+               <p>UNCONTROLLED IF PRINTED / DOWNLOADED.</p>
+>>>>>>> windows-service
             </StyledText>
          </Watermark>
       </PDF>
    </PDF>
    <!-- Outgoing document -->
    <PDF  result="wvstagginginsert" return="false">
+<<<<<<< HEAD
       <PDF source="state"/>
+=======
+      <PDF source="uncontrolled"/>
+>>>>>>> windows-service
    </PDF>
    <PDF  result="outDoc">
       <PDF source="wvstagginginsert"/>

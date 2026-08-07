@@ -8,11 +8,15 @@
    <PDF  result="state" return="false">
       <PDF source="target_document">
          <Watermark horizontalAnchor="Right"
-                     horizontalOffset="-24pt"
+                     horizontalOffset="60pt"
                      rotation="90"
                      verticalAnchor="Bottom"
                      verticalOffset="144pt">
-            <StyledText color="#808080" font="Swis721 BdOul BT" font-size="28pt">
+            <StyledText color="#808080"
+                         font="Arial"
+                         font-size="28pt"
+                         font-weight="bold"
+                         opacity="25%">
                <p>In Work</p>
             </StyledText>
          </Watermark>
@@ -24,13 +28,13 @@
          <Watermark horizontalAnchor="Center"
                      replaceExisting="false"
                      verticalAnchor="Bottom"
-                     verticalOffset="6pt">
+                     verticalOffset="20pt">
             <StyledText color="#FF0000"
                          font="Arial"
                          font-size="8pt"
                          font-weight="bold"
                          text-align="center">
-               <p>UNCONTROLLED IF PRINTED / DOWNLOADED.</p>
+               <p>UNCONTROLLED IF PRINTED / DOWNLOADED</p>
             </StyledText>
          </Watermark>
       </PDF>

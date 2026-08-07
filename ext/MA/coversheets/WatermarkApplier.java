@@ -8,6 +8,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.util.Matrix;
 import org.w3c.dom.Element;
@@ -21,6 +22,7 @@ final class WatermarkApplier {
         float size = points(styled == null ? null : styled.getAttribute("font-size"), 8f);
         boolean bold = styled != null && "bold".equalsIgnoreCase(styled.getAttribute("font-weight"));
         Color color = color(styled == null ? null : styled.getAttribute("color"));
+        float opacity = opacity(styled == null ? null : styled.getAttribute("opacity"));
         float horizontalOffset = points(watermark.getAttribute("horizontalOffset"), 0f);
         float verticalOffset = points(watermark.getAttribute("verticalOffset"), 0f);
         float rotation = number(watermark.getAttribute("rotation"), 0f);
@@ -29,12 +31,12 @@ final class WatermarkApplier {
         PDType1Font font = bold ? PDType1Font.HELVETICA_BOLD : PDType1Font.HELVETICA;
         Path target = Files.createTempFile(directory, "watermarked-", ".pdf");
         try (PDDocument document = PDDocument.load(source.toFile())) {
-            for (PDPage page : document.getPages()) draw(document, page, text, font, size, color, horizontal, vertical, horizontalOffset, verticalOffset, rotation);
+            for (PDPage page : document.getPages()) draw(document, page, text, font, size, color, opacity, horizontal, vertical, horizontalOffset, verticalOffset, rotation);
             document.save(target.toFile());
         }
         return target;
     }
-    private static void draw(PDDocument document, PDPage page, String text, PDType1Font font, float size, Color color, String horizontal, String vertical, float xOffset, float yOffset, float rotation) throws IOException {
+    private static void draw(PDDocument document, PDPage page, String text, PDType1Font font, float size, Color color, float opacity, String horizontal, String vertical, float xOffset, float yOffset, float rotation) throws IOException {
         PDRectangle box = page.getCropBox(); float width = font.getStringWidth(text) / 1000f * size;
         float x = box.getLowerLeftX() + xOffset;
         if ("Center".equalsIgnoreCase(horizontal)) x = box.getLowerLeftX() + (box.getWidth() - width) / 2f + xOffset;
@@ -43,12 +45,13 @@ final class WatermarkApplier {
         if ("Center".equalsIgnoreCase(vertical)) y = box.getLowerLeftY() + (box.getHeight() - size) / 2f + yOffset;
         else if ("Top".equalsIgnoreCase(vertical)) y = box.getUpperRightY() - size + yOffset;
         try (PDPageContentStream stream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true)) {
-            stream.saveGraphicsState(); stream.setNonStrokingColor(color); stream.beginText(); stream.setFont(font, size); stream.setTextMatrix(Matrix.getRotateInstance(Math.toRadians(rotation), x, y)); stream.showText(text); stream.endText(); stream.restoreGraphicsState();
+            stream.saveGraphicsState(); PDExtendedGraphicsState graphicsState = new PDExtendedGraphicsState(); graphicsState.setNonStrokingAlphaConstant(opacity); stream.setGraphicsStateParameters(graphicsState); stream.setNonStrokingColor(color); stream.beginText(); stream.setFont(font, size); stream.setTextMatrix(Matrix.getRotateInstance(Math.toRadians(rotation), x, y)); stream.showText(text); stream.endText(); stream.restoreGraphicsState();
         }
     }
     private static Element child(Element parent, String name) { for (org.w3c.dom.Node n = parent.getFirstChild(); n != null; n = n.getNextSibling()) if (n.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE && name.equals(n.getLocalName())) return (Element) n; return null; }
     private static String watermarkText(Element watermark) { Element styled = child(watermark, "StyledText"); return styled == null ? "" : styled.getTextContent(); }
     private static float points(String value, float fallback) { if (value == null || value.isBlank()) return fallback; String v = value.trim().toLowerCase(); try { return v.endsWith("pt") ? Float.parseFloat(v.substring(0, v.length() - 2)) : Float.parseFloat(v); } catch (NumberFormatException e) { throw new IllegalArgumentException("Unsupported watermark length: " + value); } }
+    private static float opacity(String value) { if (value == null || value.isBlank()) return 1f; String v = value.trim(); try { float result = v.endsWith("%") ? Float.parseFloat(v.substring(0, v.length() - 1)) / 100f : Float.parseFloat(v); if (result < 0f || result > 1f) throw new IllegalArgumentException("Watermark opacity must be between 0% and 100%."); return result; } catch (NumberFormatException e) { throw new IllegalArgumentException("Unsupported watermark opacity: " + value); } }
     private static float number(String value, float fallback) { if (value == null || value.isBlank()) return fallback; try { return Float.parseFloat(value.trim()); } catch (NumberFormatException e) { throw new IllegalArgumentException("Unsupported watermark rotation: " + value); } }
     private static String defaultValue(String value, String fallback) { return value == null || value.isBlank() ? fallback : value; }
     private static Color color(String value) { if (value == null || value.isBlank() || "black".equalsIgnoreCase(value)) return Color.BLACK; if ("white".equalsIgnoreCase(value)) return Color.WHITE; if ("red".equalsIgnoreCase(value)) return Color.RED; if (value.matches("#[0-9a-fA-F]{6}")) return new Color(Integer.parseInt(value.substring(1), 16)); throw new IllegalArgumentException("Unsupported watermark color: " + value); }

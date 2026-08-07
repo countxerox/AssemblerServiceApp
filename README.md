@@ -120,6 +120,6 @@ The 250 MiB request limit applies to the complete incoming SOAP message, includi
 
 ### Supported DDX watermarks
 
-For `invokeOneDocument`, the service interprets a `<Watermark>` nested in a source `<PDF>` element. It applies the watermark to every page at that point in the DDX sequence. The supported `Watermark` attributes are `horizontalAnchor`, `verticalAnchor`, `horizontalOffset`, `verticalOffset`, and `rotation`; offsets use points. The supported `StyledText` attributes are `color`, `font-size`, and `font-weight="bold"`.
+For `invokeOneDocument`, the service interprets a `<Watermark>` nested in a source `<PDF>` element. It applies the watermark to every page at that point in the DDX sequence. The supported `Watermark` attributes are `horizontalAnchor`, `verticalAnchor`, `horizontalOffset`, `verticalOffset`, and `rotation`; offsets use points. The supported `StyledText` attributes are `color`, `font-size`, `font-weight="bold"`, and `opacity`. Opacity is a percentage from `0%` to `100%`; when omitted, it defaults to fully opaque.
 
 `Left`, `Center`, and `Right` horizontal anchors, and `Bottom`, `Center`, and `Top` vertical anchors are supported. Colours may be `black`, `white`, `red`, or a six-digit hexadecimal value such as `#808080`. PDFBox standard Helvetica fonts are used; DDX font names are not currently mapped to installed fonts. An empty watermark paragraph is treated as a no-op, matching the supplied `nowatermarkDDX.xml` example. Other Adobe DDX operations, such as `ReaderRights`, remain ignored.
